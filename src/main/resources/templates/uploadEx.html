@@ -24,10 +24,10 @@
 
 			const files = inputFile[0].files;
 
-            files.map(i => {
-                console.log(files[i])
-				formData.append("uploadFiles", files[i])
-			})
+            for(const i = 0; i < files.length; i++) {
+                console.log(files[i]);
+                formData.append("uploadFiles", files[i]);
+			}
 
 		})
 
