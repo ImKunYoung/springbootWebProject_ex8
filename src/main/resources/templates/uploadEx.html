@@ -24,7 +24,7 @@
 
 			const files = inputFile[0].files;
 
-            for(const i = 0; i < files.length; i++) {
+            for(let i = 0; i < files.length; i++) {
                 console.log(files[i]);
                 formData.append("uploadFiles", files[i]);
 			}
