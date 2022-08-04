@@ -29,6 +29,27 @@
                 formData.append("uploadFiles", files[i]);
 			}
 
+
+            /*실제 업로드 부분*/
+			/*upload ajax*/
+			$.ajax({
+				url: '/uploadAjax',
+				processData: false,
+				contentType: false, // 파일 업로드를 multipart/form-data 타입을 사용하기 위함
+				data: formData,
+				type: 'POST',
+				dataType: 'json',
+				success: result => {
+                    console.log(result);
+                    // 나중에 화면 처리
+                },
+				error: (jqXHR, textStatus, errorThrown) => {
+                    console.log(textStatus)
+				}
+			})
+
+
+
 		})
 
 	</script>
