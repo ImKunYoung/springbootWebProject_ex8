@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Log4j2
 public class UploadController {
 
-    @Value("${com.example.ex8_fileupload.upload.path}") // application의 properties의 변수
+    @Value("${com.example.ex8_fileupload.upload.path}") // application 의 properties 의 변수
     private String uploadPath;
 
     @PostMapping("/uploadAjax")
