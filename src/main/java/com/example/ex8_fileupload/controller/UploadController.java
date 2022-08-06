@@ -18,6 +18,12 @@ public class UploadController {
 
         for (MultipartFile uploadFile: uploadFiles) {
 
+            // 이미지 파일만 업로드
+            if (!uploadFile.getContentType().startsWith("image")) {
+                log.warn("this file is not image type");
+                return;
+            }
+
             String orginalName = uploadFile.getOriginalFilename();
             assert orginalName != null;
             String fileName = orginalName.substring(orginalName.lastIndexOf("\\") + 1);
