@@ -22,7 +22,7 @@ public class UploadResultDTO implements Serializable {
     }
 
     /*섬네일 이미지 반환*/
-    public String getThumnailURL() {
+    public String getThumbnailURL() {
         return URLEncoder.encode(folderPath + "/s_" + uuid + "_" + fileName, StandardCharsets.UTF_8);
     }
 
