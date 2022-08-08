@@ -2,6 +2,7 @@ package com.example.ex8_fileupload.controller;
 
 import com.example.ex8_fileupload.dto.UploadResultDTO;
 import lombok.extern.log4j.Log4j2;
+import net.coobird.thumbnailator.Thumbnailator;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -47,26 +48,32 @@ public class UploadController {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
 
-            // 실제 파일 이름 IE나 Edge는 전체 경로가 들어오므로 => 바뀐 듯 ..
-            String orginalName = uploadFile.getOriginalFilename();
+
+            String orginalName = uploadFile.getOriginalFilename(); // 실제 파일 이름 IE나 Edge는 전체 경로가 들어오므로 => 바뀐 듯 ..
             assert orginalName != null;
             String fileName = orginalName.substring(orginalName.lastIndexOf("\\") + 1);
 
             log.info("fileName: "+fileName);
 
-            // 날짜 폴더 생성
-            String folderPath = makeFolder();
+            String folderPath = makeFolder(); // 날짜 폴더 생성
 
-            // UUID
-            String uuid = UUID.randomUUID().toString();
+            String uuid = UUID.randomUUID().toString(); // UUID
 
-            // 저장할 파일 이름 중간에 "_"를 이용해서 구현
-            String saveName = uploadPath + File.separator + folderPath + File.separator + uuid + "_" + fileName;
+            String saveName = uploadPath + File.separator + folderPath + File.separator + uuid + "_" + fileName;  // 저장할 파일 이름 중간에 "_"를 이용해서 구현
 
             Path savePath = Paths.get(saveName);
 
             try {
-                uploadFile.transferTo(savePath); // 실제 이미지 저장
+                // 원본 파일 저장
+                uploadFile.transferTo(savePath);
+
+                // 섬네일 생성
+                String thumbnailSaveName = uploadPath + File.separator + folderPath + File.separator + "s_" + uuid + "_" + fileName;
+
+                // 섬네일 생성
+                File thumbnailFile = new File(thumbnailSaveName);
+                Thumbnailator.createThumbnail(savePath.toFile(), thumbnailFile, 100, 100);
+
                 resultDTOList.add(new UploadResultDTO(fileName, uuid, folderPath));
 
             } catch (IOException e) {
