@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -115,6 +116,23 @@ public class UploadController {
         }
 
         return result;
+
+    }
+
+
+    /*업로드 파일 삭제*/
+    @PostMapping("/removeFile")
+    public ResponseEntity<Boolean> removeFile(String fileName) {
+
+        String srcFileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8);
+
+        File file = new File(uploadPath + File.separator + srcFileName);
+
+        File thumbnail = new File(file.getParent(), "s_" + file.getName());
+
+        boolean result = file.delete() && thumbnail.delete();
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
 
