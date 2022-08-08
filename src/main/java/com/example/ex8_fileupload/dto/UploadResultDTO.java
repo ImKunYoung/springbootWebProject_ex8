@@ -21,4 +21,9 @@ public class UploadResultDTO implements Serializable {
         return URLEncoder.encode(folderPath+"/"+uuid+"_"+fileName, StandardCharsets.UTF_8);
     }
 
+    /*섬네일 이미지 반환*/
+    public String getThumnailURL() {
+        return URLEncoder.encode(folderPath + "/s_" + uuid + "_" + fileName, StandardCharsets.UTF_8);
+    }
+
 }
