@@ -31,15 +31,17 @@
                 formData.append("uploadFiles", files[i]);
 			}
 
+            /*섬네일 이미지 보여줌*/
 			const showUploadedImages = arr => {
                 console.log(arr);
 
                 const divArea = $(".uploadResult");
 
                 for(let i = 0; i<arr.length; i++){
-                    divArea.append("<img src='/display?fileName="+arr[i].imageURL+"' alt='..null'>");
+                    divArea.append("<img src='/display?fileName="+arr[i].thumbnailURL+"' alt='..null'>");
 				}
 			}
+
 
             /*실제 업로드 부분*/
 			/*upload ajax*/
