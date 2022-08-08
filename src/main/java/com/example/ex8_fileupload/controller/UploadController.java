@@ -42,7 +42,7 @@ public class UploadController {
         for (MultipartFile uploadFile: uploadFiles) {
 
             // 이미지 파일만 업로드
-            if (!Objects.requireNonNull(uploadFile.getContentType()).startsWith("image")) {
+            if (!uploadFile.getContentType().startsWith("image")) {
                 log.warn("this file is not image type");
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
