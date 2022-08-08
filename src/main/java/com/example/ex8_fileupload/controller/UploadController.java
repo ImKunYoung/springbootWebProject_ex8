@@ -7,8 +7,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 @RestController
 @Log4j2
@@ -28,7 +32,7 @@ public class UploadController {
                 return;
             }
 
-            // 실제 파일 이름 IE나 Edge는 전체 경로가 들어오므로
+            // 실제 파일 이름 IE나 Edge는 전체 경로가 들어오므로 => 바뀐 듯 ..
             String orginalName = uploadFile.getOriginalFilename();
             assert orginalName != null;
             String fileName = orginalName.substring(orginalName.lastIndexOf("\\") + 1);
@@ -38,7 +42,19 @@ public class UploadController {
             // 날짜 폴더 생성
             String folderPath = makeFolder();
 
+            // UUID
+            String uuid = UUID.randomUUID().toString();
 
+            // 저장할 파일 이름 중간에 "_"를 이용해서 구현
+            String saveName = uploadPath + File.separator + folderPath + File.separator + uuid + "_" + fileName;
+
+            Path savePath = Paths.get(saveName);
+
+            try {
+                uploadFile.transferTo(savePath);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         }
 
@@ -54,8 +70,11 @@ public class UploadController {
         // make folder --------
         File uploadPathFolder = new File(uploadPath, folderPath);
 
-        if(uploadPathFolder.exists() == false) {
-            uploadPathFolder.mkdirs();
+        if(!uploadPathFolder.exists()) {
+            boolean mkdirs = uploadPathFolder.mkdirs();
+            log.info("-------------------makeFolder------------------");
+            log.info("uploadPathFolder.exists(): "+uploadPathFolder.exists());
+            log.info("mkdirs: "+mkdirs);
         }
 
         return folderPath;
