@@ -85,6 +85,7 @@ public class UploadController {
 
     }
 
+
     /*업로드 이미지 출력하기*/
     @GetMapping("/display")
     public ResponseEntity<byte[]> getFile(String fileName) {
@@ -102,13 +103,11 @@ public class UploadController {
 
             HttpHeaders header = new HttpHeaders();
 
-
             // MIME 타입 처리
             header.add("Content-Type", Files.probeContentType(file.toPath()));
 
             // 파일 데이터 처리
             result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), header, HttpStatus.OK);
-
 
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -118,6 +117,7 @@ public class UploadController {
         return result;
 
     }
+
 
     /*날짜 폴더 생성*/
     private String makeFolder() {
